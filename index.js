@@ -15,7 +15,10 @@ function stringTime(t) {
 }
 
 function addHtml(t) {
-	document.getElementById('timer').innerHTML = t;
+	document.title = t;
+	setTimeout(() => {
+		document.getElementById('timer').innerHTML = t;
+	}, 150)
 }
 
 setInterval(() => {
