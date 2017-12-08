@@ -2,7 +2,7 @@ function nextFriday() {
 	var dayOfWeek = 5;
 	var date = new Date();
 	date.setDate(date.getDate() + (dayOfWeek + 7 - date.getDay()) % 7);
-	date.setHours(17, 0, 0, 0);
+	date.setHours(16, 0, 0, 0);
 	return date.getTime();
 }
 
