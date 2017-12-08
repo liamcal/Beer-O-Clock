@@ -1,17 +1,34 @@
+function getCurrentTime() {
+	let ct = new Date();
+	return ct;
+}
+
 function nextFriday() {
+	var ct = getCurrentTime();
 	var dayOfWeek = 5;
 	var date = new Date();
 	date.setDate(date.getDate() + (dayOfWeek + 7 - date.getDay()) % 7);
 	date.setHours(16, 0, 0, 0);
+	if (ct.getDay() == 5 && ct.getHours() >= 16) {
+		date.setDate(date.getDate() + 7);
+	}
 	return date.getTime();
 }
 
-function timeToBeer() {
-	return Math.abs(new Date().getTime() - nextFriday());
+function timeToBeer(a) {
+	return Math.abs(getCurrentTime().getTime() - a);
 }
 
 function stringTime(t) {
-	return new Date(t).toISOString().slice(-13, -5);
+	var ct = getCurrentTime();
+	var dyst = 0;
+	var x = [5, 4, 3, 2, 1, 0, 6];
+	if (ct.getHours() >= 16 && ct.getDay() == 5) {
+		dyst = 7;
+	} else {
+		dyst = x[ct.getDay()]
+	}
+	return `${dyst}:${new Date(t).toISOString().slice(-13, -5)}`;
 }
 
 function addHtml(t) {
@@ -22,5 +39,5 @@ function addHtml(t) {
 }
 
 setInterval(() => {
-	addHtml(stringTime(timeToBeer()));
-}, 100);
+	addHtml(stringTime(timeToBeer(nextFriday())));
+}, 200);
