@@ -28,11 +28,11 @@ function nextFriday() {
 
 function timeToBeer() {
 	var perc = 1 - Math.round(Math.abs(nextFriday() - getCurrentTime().getTime()) / 687600) / 1000;
+	document.getElementsByClassName('beer')[0].style.height = perc * 28 + 'vmin';
 	if ((Math.abs(getCurrentTime().getTime() - nextFriday()) / 1000) < 254 && document.getElementById('countdown_song').paused) {
 		document.getElementById('countdown_song').currentTime = 254 - (Math.abs(getCurrentTime().getTime() - nextFriday()) / 1000);
 		document.getElementById('countdown_song').play();
 	}
-	document.getElementsByClassName('beer')[0].style.height = perc * 28 + 'vmin'
 	if (perc >= 0.9) {
 		document.getElementsByClassName('bubble')[0].style.opacity = 5*perc/6;
 		document.getElementsByClassName('small-bubbles')[0].style.opacity = 5*perc/6;
