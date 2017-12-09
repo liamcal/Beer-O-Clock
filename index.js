@@ -1,48 +1,45 @@
-var testingMode = false;
-
-function getCurrentTime() {
-	let ct = new Date();
-	ct = fakeDate(ct);
-	return ct;
+const currentTime = () => {
+	let d = new Date();
+	d.setDate(8);
+	d.setHours(15, 55);
+	return d;
 }
 
-function fakeDate(ct) {
-	if (testingMode) {
-		ct.setHours(15, 55);
-		ct.setDate(15);
-	}
-	return ct;
-}
+const getCurrentTime = currentTime;
 
-function nextFriday() {
-	var ct = getCurrentTime();
-	var dayOfWeek = 5;
-	var date = new Date();
-	date.setDate(date.getDate() + (dayOfWeek + 7 - date.getDay()) % 7);
+const nextFriday = () => {
+	let date = new Date(currentTime());
+	date.setDate(date.getDate() + (12 - date.getDay()) % 7);
 	date.setHours(16, 0, 0, 0);
-	if (ct.getDay() == 5 && ct.getHours() >= 16) {
+	if (currentTime().getDay() == 5 && currentTime().getHours() >= 16) {
 		date.setDate(date.getDate() + 7);
 	}
 	return date.getTime();
 }
 
 function timeToBeer() {
-	var perc = 1 - Math.round(Math.abs(nextFriday() - getCurrentTime().getTime()) / 687600) / 1000;
-	document.getElementsByClassName('beer')[0].style.height = perc * 28 + 'vmin';
-	if ((Math.abs(getCurrentTime().getTime() - nextFriday()) / 1000) < 254 && document.getElementById('countdown_song').paused) {
-		document.getElementById('countdown_song').currentTime = 254 - (Math.abs(getCurrentTime().getTime() - nextFriday()) / 1000);
+	var perc = 1 - Math.abs(currentTime().getTime() - (nextFriday() - 604800)) / Math.abs(((nextFriday() - 604800) - nextFriday())) / 1000;
+	setTimeout(() => {
+		document.getElementsByClassName('beer')[0].classList.add('filled');
+	}, 300);
+	document.getElementsByClassName('liquid')[0].style.height = perc * 28 + 'vmin';
+	if ((((nextFriday()) - currentTime().getTime()) / 1000) < 254 && document.getElementById('countdown_song').paused) {
+		document.getElementById('countdown_song').currentTime = 254 - ((nextFriday() - getCurrentTime().getTime()) / 1000);
 		document.getElementById('countdown_song').play();
 	}
-	if (perc >= 0.9) {
-		document.getElementsByClassName('bubble')[0].style.opacity = 5*perc/6;
-		document.getElementsByClassName('small-bubbles')[0].style.opacity = 5*perc/6;
-		document.getElementsByClassName('drip')[0].style.opacity = 5*perc/6;
+	if (currentTime().getDay() == 5 && currentTime().getHours() < 17) {
+		document.getElementsByClassName('liquid')[0].style.height = 28 + 'vmin';
+		document.getElementsByClassName('beer')[0].classList.add('carbonate');
+		for (var i = document.getElementsByClassName('froth').length - 1; i >= 0; i--) {
+			document.getElementsByClassName('froth')[i].classList.add('flow');
+		}
 	} else {
-		document.getElementsByClassName('bubble')[0].style.opacity = 0;
-		document.getElementsByClassName('small-bubbles')[0].style.opacity = 0;
-		document.getElementsByClassName('drip')[0].style.opacity = 0;
+		for (var i = document.getElementsByClassName('froth').length - 1; i >= 0; i--) {
+			document.getElementsByClassName('froth')[i].classList.remove('flow');
+		}
+		document.getElementsByClassName('beer')[0].classList.remove('carbonate');
 	}
-	return Math.abs(getCurrentTime().getTime() - nextFriday());
+	return (nextFriday() - getCurrentTime().getTime());
 }
 
 function stringTime() {
@@ -51,9 +48,9 @@ function stringTime() {
 	var dyst = 0;
 	var x = [5, 4, 3, 2, 1, 0, 6];
 	if (ct.getHours() >= 16 && ct.getDay() == 5) {
-		dyst = 7;
+		dyst = 6;
 	} else {
-		dyst = x[ct.getDay()]
+		dyst = x[ct.getDay()];
 	}
 	var text = customTimes();
 	changeTitle(`${dyst}:${new Date(t).toISOString().slice(-13, -5)}`)

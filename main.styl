@@ -1,9 +1,19 @@
+xs = "screen and (max-width: 575px)"
+sm = "screen and (min-width: 576px)"
+md = "screen and (min-width: 768px)"
+lg = "screen and (min-width: 992px)"
+xl = "screen and (min-width: 1200px)"
+
 body
 	text-align center
 	font-family sans-serif
 
 #timer
-	font-size 100px
+	font-size 50px
+	@media sm
+		font-size 75px
+	@media md
+		font-size 100px
 	font-family 'Roboto Mono', 'Courier New', monospace
 	& span:first-of-type::before
 		content ''
@@ -12,23 +22,54 @@ body
 		content ':'
 
 h1
+	font-size 30px
+	@media md
+		font-size 50px
 	padding-top 10px
-	font-size 50px
+
+#helper
+	font-size 10px
+	@media sm
+		font-size 15px
+	@media md
+		font-size 20px
 
 #helper span
-	margin 0 72px 0 72px
+	margin 0 35px 0 35px
+	@media sm
+		margin 0 53px 0 53px
+	@media md
+		margin 0 75px 0 75px
 
 
 #beer
 	display table
 	transform translateX(0)
-	margin 6em auto 3em auto
+	margin-left auto
+	margin-right auto
+	margin-top 100px
+	margin-bottom 80px
+	@media sm
+		margin-top 150px
+		margin-bottom 100px
+	@media md
+		margin-top 200px
+		margin-bottom 140px
 
 $beer-color = #FFD36D
 $glass-color = #EEF5F8
-$foam-color = #FFF8E1
+$foam-color = #FAFAFA
+$carbonation-color = #ffc849
 
-.beer, .beer-b, .bubble, .small-bubbles, .drip
+.froth
+	opacity: 0;
+	transition 1s opacity ease .9s
+
+.froth.flow
+	opacity: 1;
+	transition 1s opacity ease-in-out .9s
+
+.beer, .beer-b, .bubble, .small-bubbles, .drip, .liquid
 	position absolute
 
 .bubble, .small-bubbles
@@ -69,16 +110,53 @@ $foam-color = #FFF8E1
 	background darken($glass-color, 10)
 	border-radius 0.5vmin 0.5vmin 1vmin 1vmin
 
+.liquid
+	height 0px
+	bottom 0vmin
+	width 16vmin
+	animation 0.3s liquidPac ease
+	animation-delay 1s
+
 .beer
 	bottom 2vmin
 	left 2vmin
 	width 16vmin
-	height (28vmin * 0)
+	max-height 28.5vmin
+	height 100%
 	background $beer-color
 	border-radius 0 0 1vmin 1vmin
+	animation 1.3s beerFill ease-in-out
+	animation-delay 1s
+	opacity 0
+	&.filled
+		opacity 1
+
+.beer
+	&:before, &:after
+		opacity 0
+
+.beer.carbonate
+	&:before, &:after
+		position absolute
+		content ''
+		background $carbonation-color
+		border-radius 100%
+		animation 3s carbonate infinite
+		animation-delay 0.7s
+	&:before
+		width 2vmin
+		height 2vmin
+		bottom 2vmin
+		left 5vmin
+		box-shadow 7vmin -15vmin 0 $carbonation-color, 4vmin -10vmin 0 $carbonation-color, 6vmin -3vmin 0 $carbonation-color
+	&:after
+		width 1.5vmin
+		height 1.5vmin
+		bottom 6vmin
+		left 6vmin
+		box-shadow -3vmin -8vmin 0 $carbonation-color, 7vmin -5vmin 0 $carbonation-color
 
 .bubble
-	opacity 0
 	width 10vmin
 	height 10vmin
 	top -5vmin
@@ -101,30 +179,139 @@ $foam-color = #FFF8E1
 	background $foam-color
 	border-radius 100%
 
-.small-bubbles
+.small-bubbles:before, .small-bubbles:after
+	position absolute
+	content ''
+	border-radius 100%
+	animation-delay 3.8s
 	opacity 0
+
+.small-bubbles
 	background darken($foam-color, 2)
 	width 5vmin
 	height 5vmin
 	top -7vmin
 	left 11vmin
 	&:before
+		background darken($foam-color, 5)
 		width 3vmin
 		height 3vmin
 		top -6vmin
-		left -3vmin
+		left -1vmin
+		animation 5s up infinite
 	&:after
+		background darken($foam-color, 5)
 		width 3vmin
 		height 3vmin
 		top -8vmin
-		left -8vmin
+		left -7vmin
+		animation 5s up2 infinite
 
 .drip
-	opacity 0
 	width 5vmin
-	height 14vmin
+	height 0vmin
 	top 1vmin
 	border-radius 100px
-	left -2vmin
-	box-shadow 4vmin -6vmin 0 $foam-color
+	left -1.7vmin
+	box-shadow 4vmin -4vmin 0 $foam-color
 	background darken($foam-color, 3)
+.drip.flow
+	animation: 5s drip infinite;
+	animation-delay: 1.3s;
+
+@keyframes carbonate {
+  0% {
+    transform: translateY(0px);
+    opacity: 0;
+  }
+  25% {
+  	opacity: 1;
+  }
+  75% {
+  	opacity: 0;
+  }
+  100% {
+  	transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+
+@keyframes up {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  25% {
+  	opacity: 1;
+  }
+  75% {
+  	opacity: 0;
+  }
+  100% {
+  	transform: translateY(-40px);
+    opacity: 0;
+  }
+}
+
+@keyframes up2 {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  25% {
+  	opacity: 1;
+  }
+  75% {
+  	opacity: 0;
+  }
+  100% {
+  	transform: translateY(-55px);
+    opacity: 0;
+  }
+}
+
+@keyframes beerFill {
+	0% {
+		opacity: 0;
+		height: 0%;
+	}
+	10% {
+		opacity: 0.4;
+	}
+	100% {
+		height: 100%
+		opacity: 1;
+	}
+}
+
+@keyframes liquidPac {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes drip {
+  0% {
+    transform: translateY(0px);
+    height: 0;
+    opacity: 1;
+  }
+  45% {
+  	opacity: 1;
+  }
+  70% {
+    height: 22vmin;
+    opacity: 0;
+  }
+  90% {
+  	height: 0;
+  	opacity: 0;
+  }
+  100% {
+  	height: 0;
+  	opacity: 1;
+  }
+}
