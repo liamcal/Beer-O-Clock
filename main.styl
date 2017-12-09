@@ -6,7 +6,8 @@ xl = "screen and (min-width: 1200px)"
 
 body
 	text-align center
-	font-family sans-serif
+	font-family 'Lato', sans-serif
+	font-weight 400
 
 #timer
 	font-size 50px
@@ -26,6 +27,7 @@ h1
 	@media md
 		font-size 50px
 	padding-top 10px
+	font-weight 300
 
 #helper
 	font-size 10px
@@ -35,11 +37,11 @@ h1
 		font-size 20px
 
 #helper span
-	margin 0 35px 0 35px
+	margin 0 42px
 	@media sm
-		margin 0 53px 0 53px
+		margin 0 63px
 	@media md
-		margin 0 75px 0 75px
+		margin 0 83px
 
 
 #beer
@@ -48,18 +50,19 @@ h1
 	margin-left auto
 	margin-right auto
 	margin-top 100px
-	margin-bottom 80px
+	margin-bottom 60px
 	@media sm
 		margin-top 150px
-		margin-bottom 100px
+		margin-bottom 80px
 	@media md
 		margin-top 200px
-		margin-bottom 140px
+		margin-bottom 100px
 
-$beer-color = #FFD36D
-$glass-color = #EEF5F8
+$beer-color = #FFD54F
+$glass-color = #E3F2FD
 $foam-color = #FAFAFA
-$carbonation-color = #ffc849
+$carbonation-color1 = #FFC107
+$carbonation-color2 = #FFB300
 
 .froth
 	opacity: 0;
@@ -96,7 +99,7 @@ $carbonation-color = #ffc849
 		top 8vmin
 		left 13vmin
 		background #fff
-		border-radius 19%
+		border-radius 14%
 
 .mug:before, .mug:after
 	position absolute
@@ -107,7 +110,7 @@ $carbonation-color = #ffc849
 	left 2vmin
 	width 16vmin
 	height 28.5vmin
-	background darken($glass-color, 10)
+	background darken($glass-color, 3)
 	border-radius 0.5vmin 0.5vmin 1vmin 1vmin
 
 .liquid
@@ -139,22 +142,23 @@ $carbonation-color = #ffc849
 	&:before, &:after
 		position absolute
 		content ''
-		background $carbonation-color
 		border-radius 100%
 		animation 3s carbonate infinite
 		animation-delay 0.7s
 	&:before
+		background $carbonation-color1
 		width 2vmin
 		height 2vmin
 		bottom 2vmin
 		left 5vmin
-		box-shadow 7vmin -15vmin 0 $carbonation-color, 4vmin -10vmin 0 $carbonation-color, 6vmin -3vmin 0 $carbonation-color
+		box-shadow 7vmin -15vmin 0 $carbonation-color1, 4vmin -10vmin 0 $carbonation-color2, 6vmin -3vmin 0 $carbonation-color1
 	&:after
+		background $carbonation-color2
 		width 1.5vmin
 		height 1.5vmin
 		bottom 6vmin
 		left 6vmin
-		box-shadow -3vmin -8vmin 0 $carbonation-color, 7vmin -5vmin 0 $carbonation-color
+		box-shadow -3vmin -8vmin 0 $carbonation-color2, 7vmin -5vmin 0 $carbonation-color1
 
 .bubble
 	width 10vmin
