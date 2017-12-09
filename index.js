@@ -1,5 +1,7 @@
 let currentTime = () => {
 	let d = new Date();
+	d.setDate(8);
+	d.setHours(15, 57)
 	return new Date(d);
 }
 
@@ -58,7 +60,7 @@ const timer = () => {
 		rem[k] = String('0' + rem[k]).slice(-2);
 	});
 
-	changeTitle(`${rem.days}:${rem.hours}:${rem.minutes}:${rem.seconds}`)
+	changeTitle(`${rem.days}:${rem.hours}:${rem.minutes}:${rem.seconds} - Beer O'Clock`)
 	const y = ['d', 'h', 'm', 's'];
 	if (currentTime().getDay() == 5 && currentTime().getHours() == 16) {
 		document.getElementById('timer').innerHTML = '<span class="d">00</span>:<span class="h">00</span>:<span class="m">00</span>:<span class="s">00</span>';

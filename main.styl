@@ -75,7 +75,7 @@ $carbonation-color2 = #FFB300
 		top 6vmin
 		width 15vmin
 		height 17vmin
-		border-radius 19%
+		border-radius 22%
 		background $glass-color
 	&:after
 		z-index -1
@@ -110,19 +110,25 @@ $carbonation-color2 = #FFB300
 	bottom 2vmin
 	left 2vmin
 	width 16vmin
-	max-height 28.5vmin
+	max-height 29vmin
 	height 100%
 	background linear-gradient($beer-color1, $beer-color2)
-	border-radius 0 0 1vmin 1vmin
 	animation 1.3s beerFill ease-in-out
 	animation-delay 1s
 	opacity 0
+	& .cap
+		background-color #FAFAFA
+		opacity 0
+		height 1vmin
+		transition 1s opacity ease-in-out
+		width 100%
+		margin-top - 1vmin
 	&.filled
 		opacity 1
+		border-radius 0 0 1vmin 1vmin
 		& .cap
-			background-color #fff
-			height 8px
-			width 100%
+			opacity 1
+			transition 1s opacity ease-in-out
 
 .beer
 	&:before, &:after
@@ -134,8 +140,8 @@ $carbonation-color2 = #FFB300
 		position absolute
 		content ''
 		border-radius 100%
-		animation 3s carbonate infinite
-		animation-delay 1s
+		animation 2.4s carbonate infinite
+		animation-delay 1.3s
 	&:before
 		background $carbonation-color1
 		width 2vmin
@@ -167,7 +173,7 @@ $carbonation-color2 = #FFB300
 		width 10vmin
 		height 10vmin
 		left 14vmin
-		top 0vmin
+		top -2vmin
 
 .bubble:before, .bubble:after
 	transition 1s opacity ease
@@ -210,109 +216,116 @@ $carbonation-color2 = #FFB300
 .drip
 	transition 1s opacity ease
 	width 5vmin
-	height 0vmin
+	// height 5vmin
 	top 1vmin
 	border-radius 100px
 	left -1.7vmin
 	box-shadow 4vmin -4vmin 0 $foam-color
 	background darken($foam-color, 3)
+	opacity 0
+	transition 1s opacity ease
 .drip.flow
+	opacity 1
 	animation: 5s drip infinite;
 	animation-delay: 1.3s;
+	transition 1s opacity ease
+	transition-delay 1.4s
 
-@keyframes carbonate {
-  0% {
-    transform: translateY(0px);
-    opacity: 0;
-  }
-  25% {
-  	opacity: 1;
-  }
-  75% {
-  	opacity: 0;
-  }
-  100% {
-  	transform: translateY(-50px);
-    opacity: 0;
-  }
-}
-
-@keyframes up {
-  0% {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  25% {
-  	opacity: 1;
-  }
-  75% {
-  	opacity: 0;
-  }
-  100% {
-  	transform: translateY(-40px);
-    opacity: 0;
-  }
-}
-
-@keyframes up2 {
-  0% {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  25% {
-  	opacity: 1;
-  }
-  75% {
-  	opacity: 0;
-  }
-  100% {
-  	transform: translateY(-55px);
-    opacity: 0;
-  }
-}
-
-@keyframes beerFill {
-	0% {
-		opacity: 0;
-		height: 0%;
+	@keyframes carbonate {
+		0% {
+			transform: translateY(0px);
+			opacity: 0;
+		}
+		25% {
+			opacity: 1;
+		}
+		75% {
+			opacity: 0;
+		}
+		100% {
+			transform: translateY(-50px);
+			opacity: 0;
+		}
 	}
-	10% {
-		opacity: 0.4;
-	}
-	100% {
-		height: 100%
-		opacity: 1;
-	}
-}
 
-@keyframes liquidPac {
-	0% {
-		opacity: 0;
+	@keyframes up {
+		0% {
+			transform: translateY(10px);
+			opacity: 0;
+		}
+		25% {
+			opacity: 1;
+		}
+		75% {
+			opacity: 0;
+		}
+		100% {
+			transform: translateY(-40px);
+			opacity: 0;
+		}
 	}
-	100% {
-		opacity: 1;
-	}
-}
 
-@keyframes drip {
-  0% {
-    transform: translateY(0px);
-    height: 0;
-    opacity: 1;
-  }
-  45% {
-  	opacity: 1;
-  }
-  70% {
-    height: 22vmin;
-    opacity: 0;
-  }
-  90% {
-  	height: 0;
-  	opacity: 0;
-  }
-  100% {
-  	height: 0;
-  	opacity: 1;
-  }
-}
+	@keyframes up2 {
+		0% {
+			transform: translateY(10px);
+			opacity: 0;
+		}
+		25% {
+			opacity: 1;
+		}
+		75% {
+			opacity: 0;
+		}
+		100% {
+			transform: translateY(-55px);
+			opacity: 0;
+		}
+	}
+
+	@keyframes beerFill {
+		0% {
+			opacity: 0;
+			height: 0%;
+			border-radius 0 0 0.2vmin 0.2vmin
+		}
+		10% {
+			opacity: 0.4;
+		}
+		100% {
+			height: 100%
+			opacity: 1;
+			border-radius 0 0 1vmin 1vmin
+		}
+	}
+
+	@keyframes liquidPac {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes drip {
+		0% {
+			transform: translateY(0px);
+			height: 2vmin;
+			opacity: 1;
+		}
+		45% {
+			opacity: 1;
+		}
+		70% {
+			height: 22vmin;
+			opacity: 0;
+		}
+		90% {
+			height: 0;
+			opacity: 0;
+		}
+		100% {
+			height: 0;
+			opacity: 1;
+		}
+	}
