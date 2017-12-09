@@ -1,7 +1,5 @@
 let currentTime = () => {
 	let d = new Date();
-	d.setDate(8);
-	d.setHours(15, 57)
 	return new Date(d);
 }
 
