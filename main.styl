@@ -10,17 +10,16 @@ body
 	font-weight 400
 
 #timer
+	width 100%
 	font-size 50px
 	@media sm
 		font-size 75px
 	@media md
 		font-size 100px
 	font-family 'Roboto Mono', 'Courier New', monospace
-	& span:first-of-type::before
-		content ''
-	& span::before
-		font-family 'Roboto Mono', 'Courier New', monospace
-		content ':'
+	& span
+		padding 0
+		margin 0
 
 h1
 	font-size 30px
@@ -28,21 +27,6 @@ h1
 		font-size 50px
 	padding-top 10px
 	font-weight 300
-
-#helper
-	font-size 10px
-	@media sm
-		font-size 15px
-	@media md
-		font-size 20px
-
-#helper span
-	margin 0 42px
-	@media sm
-		margin 0 63px
-	@media md
-		margin 0 83px
-
 
 #beer
 	display table
@@ -58,7 +42,8 @@ h1
 		margin-top 200px
 		margin-bottom 100px
 
-$beer-color = #FFD54F
+$beer-color1 = #FFD54F
+$beer-color2 = #FFB300
 $glass-color = #E3F2FD
 $foam-color = #FAFAFA
 $carbonation-color1 = #FFC107
@@ -72,7 +57,7 @@ $carbonation-color2 = #FFB300
 	opacity: 1;
 	transition 1s opacity ease-in-out .9s
 
-.beer, .beer-b, .bubble, .small-bubbles, .drip, .liquid
+.beer, .beer-b, .bubble, .small-bubbles, .drip, .liquid, .cap
 	position absolute
 
 .bubble, .small-bubbles
@@ -127,13 +112,17 @@ $carbonation-color2 = #FFB300
 	width 16vmin
 	max-height 28.5vmin
 	height 100%
-	background $beer-color
+	background linear-gradient($beer-color1, $beer-color2)
 	border-radius 0 0 1vmin 1vmin
 	animation 1.3s beerFill ease-in-out
 	animation-delay 1s
 	opacity 0
 	&.filled
 		opacity 1
+		& .cap
+			background-color #fff
+			height 8px
+			width 100%
 
 .beer
 	&:before, &:after
@@ -146,7 +135,7 @@ $carbonation-color2 = #FFB300
 		content ''
 		border-radius 100%
 		animation 3s carbonate infinite
-		animation-delay 0.7s
+		animation-delay 1s
 	&:before
 		background $carbonation-color1
 		width 2vmin

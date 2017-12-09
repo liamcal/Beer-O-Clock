@@ -39,22 +39,33 @@ const timeToBeer = () => {
 	return (nextFriday() - currentTime().getTime());
 }
 
-const stringTime = () => {
-	var dyst = 0;
-	var x = [5, 4, 3, 2, 1, 0, 6];
-	if (currentTime().getHours() >= 16 && currentTime().getDay() == 5) {
-		dyst = 6;
+const timer = () => {
+	let _second = 1000;
+	let _minute = _second * 60;
+	let _hour = _minute * 60;
+	let _day = _hour * 24;
+
+	let distance = timeToBeer();
+
+	let rem = {
+		days: Math.floor(distance / _day),
+		hours: Math.floor((distance % _day) / _hour),
+		minutes: Math.floor((distance % _hour) / _minute),
+		seconds: Math.floor((distance % _minute) / _second)
+	};
+
+	Object.keys(rem).map((k) => {
+		rem[k] = String('0' + rem[k]).slice(-2);
+	});
+
+	changeTitle(`${rem.days}:${rem.hours}:${rem.minutes}:${rem.seconds}`)
+	const y = ['d', 'h', 'm', 's'];
+	if (currentTime().getDay() == 5 && currentTime().getHours() == 16) {
+		document.getElementById('timer').innerHTML = '<span class="d">00</span>:<span class="h">00</span>:<span class="m">00</span>:<span class="s">00</span>';
 	} else {
-		dyst = x[currentTime().getDay()];
-	}
-	if (!customTimes()) {
-		document.getElementById('helper').style.display = 'block';
-		changeTitle(`${dyst}:${new Date(timeToBeer()).toISOString().slice(-13, -5)}`)
-		return `<span>0${dyst}</span><span>${new Date(timeToBeer()).toISOString().slice(-13, -5).split(':').join('</span><span>')}</span>`;
-	} else {
-		document.getElementById('helper').style.display = 'none';
-		changeTitle(`${customTimes()}`)
-		return `<span>${customTimes()}</span>`;
+		for (var i=0; i < y.length; i++) {
+			document.querySelectorAll('#timer span.' + y[i])[0].innerHTML = Object.values(rem)[i];
+		}
 	}
 }
 
@@ -62,13 +73,9 @@ const changeTitle = (title) => {
 	document.title = title;
 }
 
-const addHtml = (t) => {
-	document.getElementById('timer').innerHTML = t;
-}
-
 (() => {
 	setInterval(() => {
-		addHtml(stringTime());
+		timer();
 	}, 1000);
 })();
 
