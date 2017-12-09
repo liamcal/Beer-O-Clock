@@ -1,5 +1,16 @@
+var testingMode = false;
+
 function getCurrentTime() {
 	let ct = new Date();
+	ct = fakeDate(ct);
+	return ct;
+}
+
+function fakeDate(ct) {
+	if (testingMode) {
+		ct.setHours(15, 55);
+		ct.setDate(15);
+	}
 	return ct;
 }
 
@@ -15,11 +26,27 @@ function nextFriday() {
 	return date.getTime();
 }
 
-function timeToBeer(a) {
-	return Math.abs(getCurrentTime().getTime() - a);
+function timeToBeer() {
+	var perc = 1 - Math.round(Math.abs(nextFriday() - getCurrentTime().getTime()) / 687600) / 1000;
+	if ((Math.abs(getCurrentTime().getTime() - nextFriday()) / 1000) < 254 && document.getElementById('countdown_song').paused) {
+		document.getElementById('countdown_song').currentTime = 254 - (Math.abs(getCurrentTime().getTime() - nextFriday()) / 1000);
+		document.getElementById('countdown_song').play();
+	}
+	document.getElementsByClassName('beer')[0].style.height = perc * 28 + 'vmin'
+	if (perc >= 0.9) {
+		document.getElementsByClassName('bubble')[0].style.opacity = 5*perc/6;
+		document.getElementsByClassName('small-bubbles')[0].style.opacity = 5*perc/6;
+		document.getElementsByClassName('drip')[0].style.opacity = 5*perc/6;
+	} else {
+		document.getElementsByClassName('bubble')[0].style.opacity = 0;
+		document.getElementsByClassName('small-bubbles')[0].style.opacity = 0;
+		document.getElementsByClassName('drip')[0].style.opacity = 0;
+	}
+	return Math.abs(getCurrentTime().getTime() - nextFriday());
 }
 
-function stringTime(t) {
+function stringTime() {
+	var t = timeToBeer();
 	var ct = getCurrentTime();
 	var dyst = 0;
 	var x = [5, 4, 3, 2, 1, 0, 6];
@@ -28,16 +55,39 @@ function stringTime(t) {
 	} else {
 		dyst = x[ct.getDay()]
 	}
-	return `${dyst}:${new Date(t).toISOString().slice(-13, -5)}`;
+	var text = customTimes();
+	changeTitle(`${dyst}:${new Date(t).toISOString().slice(-13, -5)}`)
+	if (text == null) {
+		document.getElementById('helper').style.display = 'block';
+		return `<span>0${dyst}</span><span>${new Date(t).toISOString().slice(-13, -5).split(':').join('</span><span>')}</span>`;
+	} else {
+		document.getElementById('helper').style.display = 'none';
+		return `<span>${text}</span>`;
+	}
+}
+
+function changeTitle(title) {
+	document.title = title;
 }
 
 function addHtml(t) {
-	document.title = t;
-	setTimeout(() => {
-		document.getElementById('timer').innerHTML = t;
-	}, 150)
+	document.getElementById('timer').innerHTML = t;
 }
 
-setInterval(() => {
-	addHtml(stringTime(timeToBeer(nextFriday())));
-}, 200);
+(function loopTheShitOutOfIt() {
+	setInterval(() => {
+		addHtml(stringTime());
+	}, 1000);
+})();
+
+function customTimes() {
+	var ct = getCurrentTime();
+	if (ct.getHours() == 16) {
+		if (ct.getMinutes() == 20) {
+			return '420';
+		} else if (ct.getDay() == 5) {
+			return 'Beer O\'Clock';
+		}
+	}
+	return null;
+}
