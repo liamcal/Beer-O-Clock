@@ -1,8 +1,4 @@
-xs = "screen and (max-width: 575px)"
-sm = "screen and (min-width: 576px)"
-md = "screen and (min-width: 768px)"
-lg = "screen and (min-width: 992px)"
-xl = "screen and (min-width: 1200px)"
+@import 'config'
 
 body
 	text-align center
@@ -50,11 +46,11 @@ $carbonation-color1 = #FFC107
 $carbonation-color2 = #FFB300
 
 .froth
-	opacity: 0;
+	opacity 0
 	transition 1s opacity ease
 
 .froth.flow
-	opacity: 1;
+	opacity 1
 	transition 1s opacity ease-in-out .9s
 
 .beer, .beer-b, .bubble, .small-bubbles, .drip, .liquid, .cap
@@ -118,17 +114,15 @@ $carbonation-color2 = #FFB300
 	opacity 0
 	& .cap
 		background-color #FAFAFA
-		opacity 0
-		height 1vmin
-		transition 1s opacity ease-in-out
+		height 0
+		transition .8s height ease-out
 		width 100%
-		margin-top - 1vmin
 	&.filled
 		opacity 1
 		border-radius 0 0 1vmin 1vmin
 		& .cap
-			opacity 1
-			transition 1s opacity ease-in-out
+			height 1.3vmin
+			transition 1s height ease-out
 
 .beer
 	&:before, &:after
@@ -231,101 +225,101 @@ $carbonation-color2 = #FFB300
 	transition 1s opacity ease
 	transition-delay 1.4s
 
-	@keyframes carbonate {
-		0% {
-			transform: translateY(0px);
-			opacity: 0;
-		}
-		25% {
-			opacity: 1;
-		}
-		75% {
-			opacity: 0;
-		}
-		100% {
-			transform: translateY(-50px);
-			opacity: 0;
-		}
+@keyframes carbonate {
+	0% {
+		transform: translateY(0px);
+		opacity: 0;
 	}
+	25% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(-50px);
+		opacity: 0;
+	}
+}
 
-	@keyframes up {
-		0% {
-			transform: translateY(10px);
-			opacity: 0;
-		}
-		25% {
-			opacity: 1;
-		}
-		75% {
-			opacity: 0;
-		}
-		100% {
-			transform: translateY(-40px);
-			opacity: 0;
-		}
+@keyframes up {
+	0% {
+		transform: translateY(10px);
+		opacity: 0;
 	}
+	25% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(-40px);
+		opacity: 0;
+	}
+}
 
-	@keyframes up2 {
-		0% {
-			transform: translateY(10px);
-			opacity: 0;
-		}
-		25% {
-			opacity: 1;
-		}
-		75% {
-			opacity: 0;
-		}
-		100% {
-			transform: translateY(-55px);
-			opacity: 0;
-		}
+@keyframes up2 {
+	0% {
+		transform: translateY(10px);
+		opacity: 0;
 	}
+	25% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(-55px);
+		opacity: 0;
+	}
+}
 
-	@keyframes beerFill {
-		0% {
-			opacity: 0;
-			height: 0%;
-			border-radius 0 0 0.2vmin 0.2vmin
-		}
-		10% {
-			opacity: 0.4;
-		}
-		100% {
-			height: 100%
-			opacity: 1;
-			border-radius 0 0 1vmin 1vmin
-		}
+@keyframes beerFill {
+	0% {
+		opacity: 0;
+		height: 0%;
+		border-radius 0 0 0.2vmin 0.2vmin
 	}
+	10% {
+		opacity: 0.4;
+	}
+	100% {
+		height: 100%
+		opacity: 1;
+		border-radius 0 0 1vmin 1vmin
+	}
+}
 
-	@keyframes liquidPac {
-		0% {
-			opacity: 0;
-		}
-		100% {
-			opacity: 1;
-		}
+@keyframes liquidPac {
+	0% {
+		opacity: 0;
 	}
+	100% {
+		opacity: 1;
+	}
+}
 
-	@keyframes drip {
-		0% {
-			transform: translateY(0px);
-			height: 2vmin;
-			opacity: 1;
-		}
-		45% {
-			opacity: 1;
-		}
-		70% {
-			height: 22vmin;
-			opacity: 0;
-		}
-		90% {
-			height: 0;
-			opacity: 0;
-		}
-		100% {
-			height: 0;
-			opacity: 1;
-		}
+@keyframes drip {
+	0% {
+		transform: translateY(0px);
+		height: 2vmin;
+		opacity: 1;
 	}
+	45% {
+		opacity: 1;
+	}
+	70% {
+		height: 22vmin;
+		opacity: 0;
+	}
+	90% {
+		height: 0;
+		opacity: 0;
+	}
+	100% {
+		height: 0;
+		opacity: 1;
+	}
+}
