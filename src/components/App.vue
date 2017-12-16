@@ -17,6 +17,7 @@
 		</div>
 
 		<div id="timer"><span>{{ days }}</span>:<span>{{ hours }}</span>:<span>{{ minutes }}</span>:<span>{{ seconds }}</span></div>
+		<div id="helper">dd:hh:mm:ss</div>
 	</div>
 </template>
 
@@ -59,8 +60,10 @@ export default {
 			}
 			if (this.now.getDay() == 5 && this.now.getHours() < 17) {
 				this.lqh = 28;
-				this.carbonate = true;
-				this.flow = true;
+				setTimeout(() => {
+					this.carbonate = true;
+					this.flow = true;
+				}, 800);
 			} else {
 				this.lqh = ((this.perc > 0.075 ? this.perc : 0.075) * 28);
 				this.flow = false;
