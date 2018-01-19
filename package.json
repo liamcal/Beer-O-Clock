@@ -14,6 +14,7 @@
     "upload": "npm run build && surge -d beeroclock.surge.sh -p ./dist"
   },
   "dependencies": {
+    "animejs": "^2.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
