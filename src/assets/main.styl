@@ -4,14 +4,30 @@ body
 	text-align center
 	font-family 'Roboto Mono', monospace
 	font-weight 400
+	width 100%
+	height 100vh
+	padding 0
+	margin 0
 
-.yeast
+#yeast
 	position absolute
 	top 0
 	left 0
 	width 100%
 	height 100%
 
+#appwrap
+	z-index 1
+	position relative
+	align-items center
+	display flex
+	justify-content center
+	height 100%
+	width 100%
+
+#app
+	width 100%
+	margin-top - 100px
 
 #timer
 	width 100%
@@ -23,17 +39,13 @@ body
 	& span.digit
 		padding 0
 		margin 0
-	& span.sep
-		animation 2s blink linear infinite
 	&.flash
 		animation 1.5s blink linear infinite
-
 
 h1
 	font-size 30px
 	@media md
 		font-size 50px
-	padding-top 10px
 	font-weight 300
 
 #beer
@@ -41,12 +53,12 @@ h1
 	transform translateX(0)
 	margin-left auto
 	margin-right auto
-	margin-top 100px
+	margin-top 50px
 	margin-bottom 2vmin
 	@media sm
-		margin-top 150px
+		margin-top 100px
 	@media md
-		margin-top 200px
+		margin-top 150px
 
 $beer-color1 = #FFD54F
 $beer-color2 = #FFB300
@@ -63,10 +75,10 @@ $carbonation-color2 = #FFB300
 	opacity 1
 	transition 1s opacity ease-in-out .9s
 
-.beer, .beer-b, .bubble, .small-bubbles, .drip, .liquid, .foam
+.beer, .beer-b, .bubble, .drip, .liquid, .foam
 	position absolute
 
-.bubble, .small-bubbles
+.bubble
 	border-radius 100%
 
 .mug
@@ -186,37 +198,6 @@ $carbonation-color2 = #FFB300
 	background $foam-color
 	border-radius 100%
 
-.small-bubbles:before, .small-bubbles:after
-	position absolute
-	content ''
-	border-radius 100%
-	animation-delay 3.8s
-	opacity 0
-
-.small-bubbles
-	transition 1s opacity ease
-	background darken($foam-color, 2)
-	width 5vmin
-	height 5vmin
-	top -7vmin
-	left 11vmin
-	&:before
-		transition 1s opacity ease
-		background darken($foam-color, 5)
-		width 3vmin
-		height 3vmin
-		top -6vmin
-		left -1vmin
-		animation 5s up infinite
-	&:after
-		transition 1s opacity ease
-		background darken($foam-color, 5)
-		width 3vmin
-		height 3vmin
-		top -8vmin
-		left -7vmin
-		animation 5s up2 infinite
-
 .drip
 	transition 1s opacity ease
 	width 5vmin
@@ -252,40 +233,6 @@ $carbonation-color2 = #FFB300
 	}
 }
 
-@keyframes up {
-	0% {
-		transform: translateY(10px);
-		opacity: 0;
-	}
-	25% {
-		opacity: 1;
-	}
-	75% {
-		opacity: 0;
-	}
-	100% {
-		transform: translateY(-40px);
-		opacity: 0;
-	}
-}
-
-@keyframes up2 {
-	0% {
-		transform: translateY(10px);
-		opacity: 0;
-	}
-	25% {
-		opacity: 1;
-	}
-	75% {
-		opacity: 0;
-	}
-	100% {
-		transform: translateY(-55px);
-		opacity: 0;
-	}
-}
-
 @keyframes beerFill {
 	0% {
 		opacity: 0;
@@ -315,22 +262,21 @@ $carbonation-color2 = #FFB300
 	0% {
 		transform: translateY(0px);
 		height: 2vmin;
-		opacity: 1;
-	}
-	45% {
-		opacity: 1;
-	}
-	70% {
-		height: 22vmin;
 		opacity: 0;
 	}
+	45% {
+		opacity: .8;
+	}
+	80% {
+		height: 22vmin;
+		// opacity: 0;
+	}
 	90% {
-		height: 0;
 		opacity: 0;
 	}
 	100% {
 		height: 0;
-		opacity: 1;
+		opacity: 0;
 	}
 }
 

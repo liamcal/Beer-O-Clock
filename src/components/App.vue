@@ -1,23 +1,20 @@
 <template>
 	<div id="app">
-		<canvas id="yeast"></canvas>
 		<h1>Beer O'Clock</h1>
-
 		<div id="beer">
 			<div class="mug">
 				<div class="beer-b"></div>
-				<div class="liquid" v-bind:style="{ height: lqh + 'vmin' }">
+				<div class="liquid" v-bind:style="{ height: liquidHeight + 'vmin' }">
 					<div class="beer" v-bind:class="{ filled: filled, carbonate: carbonate }">
 						<div class="foam"></div>
 					</div>
 				</div>
 			</div>
 			<div class="froth bubble" v-bind:class="{ flow: flow }"></div>
-			<div class="froth small-bubbles" v-bind:class="{ flow: flow }"></div>
 			<div class="froth drip" v-bind:class="{ flow: flow }"></div>
 		</div>
 
-		<div id="timer" v-if="!beerOClockActive"><span class="digit">{{ days }}</span><span class="sep">:</span><span class="digit">{{ hours }}</span><span class="sep">:</span><span class="digit">{{ minutes }}</span><span class="sep">:</span><span class="digit">{{ seconds }}</span></div>
+		<div id="timer" v-if="!itIsBeerOClock"><span class="digit">{{ days }}</span><span class="sep">:</span><span class="digit">{{ hours }}</span><span class="sep">:</span><span class="digit">{{ minutes }}</span><span class="sep">:</span><span class="digit">{{ seconds }}</span></div>
 		<div id="timer" v-else class="flash"><span class="digit">00</span>:<span class="digit">00</span>:<span class="digit">00</span>:<span class="digit">00</span></div>
 		<div id="helper">dd:hh:mm:ss</div>
 	</div>
@@ -27,70 +24,53 @@
 
 <script>
 
-import fireworks from '@/components/fireworks';
+import fireworks from '@/assets/fireworks.js';
 
-const p = { s: 1000, m: 60 * 1000, h: 60 * 60 * 1000, d: 24 * 60 * 60 * 1000 };
+var DEBUG = false;
+
+const p = { s: 1, m: 60, h: 60 * 60, d: 24 * 60 * 60 };
+var fT = new Date().getTime();
+
+
 export default {
 	name: 'index',
 	mounted() {
+		if (this.itIsBeerOClock) {
+			fireworks.start();
+		}
+
 		setInterval(() => {
-			this.beerOClockActive = (this.nextFriday() - this.now.getTime()) <= 3600000;
 			this.now = this.currentTime();
-			if (!this.beerOClockActive) {
-				document.title = `${this.days}:${this.hours}:${this.minutes}:${this.seconds} - Beer O'Clock`;
-			} else {
-				document.title = 'Beer O\'Clock';
-			}
 		}, 1000);
+
 		setTimeout(() => {
 			this.filled = true;
-		}, 1500);
+		}, 1600);
 	},
 	data() {
 		return {
+			now: this.currentTime(),
 			filled: false,
 			carbonate: false,
 			flow: false,
-			lqh: 0,
-			time: {
-				days: 0,
-				hrs: 0,
-				mins: 0,
-				secs: 0
-			},
-			now: this.currentTime(),
-			maxH: 30,
-			beerOClockActive: false
+			liquidHeight: 0,
+			maxH: 30
 		};
 	},
 	computed: {
+		itIsBeerOClock() {
+			if (this.now.getHours() == 16 && this.now.getDay() == 5) {
+				return (this.nextFriday() - this.now.getTime()) <= 3600000;
+			}
+		},
 		ttb() {
-			if (this.now.getDay() == 5 && this.now.getHours() < 17) {
-				this.lqh = this.maxH;
-				setTimeout(() => {
-					this.carbonate = true;
-					this.flow = true;
-				}, 800);
-			} else {
-				this.lqh = ((this.perc > 0.075 ? this.perc : 0.075) * this.maxH);
-				this.flow = false;
-				this.carbonate = false;
-			}
-
-			console.log(fireworks);
-
-			if (this.beerOClockActive) {
-				console.log(fireworks);
-				this.lqh = this.maxH;
-			}
-
-			return (this.nextFriday() - this.now.getTime());
+			return ((this.nextFriday() - this.now.getTime()) / 1000).toFixed(0);
 		},
 		perc() {
-			return 1 - Math.abs(this.now.getTime() - (this.nextFriday() - 604800)) / Math.abs(((this.nextFriday() - 604800) - this.nextFriday())) / 1000;
+			return (1 - Math.abs(this.now.getTime() - (this.nextFriday() - 604800)) / Math.abs(((this.nextFriday() - 604800) - this.nextFriday())) / 1000).toFixed(3);
 		},
 		seconds() {
-			var s = String('0' + (Math.floor((this.ttb % p.m) / p.s))).slice(-2);
+			var s = String('0' + (Math.floor(this.ttb % p.m))).slice(-2);
 			return s > 0 ? s : '00';
 		},
 		minutes() {
@@ -106,12 +86,50 @@ export default {
 			return d > 0 ? d : '00';
 		}
 	},
+	watch: {
+		itIsBeerOClock: function() {
+			if (this.itIsBeerOClock) {
+				fireworks.start();
+			} else {
+				fireworks.stop();
+			}
+		},
+		now: function() {
+			if (!this.itIsBeerOClock) {
+				document.title = `${this.days}:${this.hours}:${this.minutes}:${this.seconds} - Beer O'Clock`;
+			} else {
+				document.title = 'Beer O\'Clock';
+			}
+
+			if (this.now.getDay() == 5 && this.now.getHours() < 17) {
+				this.liquidHeight = this.maxH;
+				setTimeout(() => {
+					this.carbonate = true;
+					this.flow = true;
+				}, 800);
+			} else {
+				this.liquidHeight = ((this.perc > 0.075 ? this.perc : 0.075) * this.maxH);
+				this.flow = false;
+				this.carbonate = false;
+			}
+
+			if (this.itIsBeerOClock) {
+				this.liquidHeight = this.maxH;
+			}
+		}
+	},
 	methods: {
 		currentTime() {
-			var t = new Date();
-			t.setHours(16);
-			t.setMinutes(0);
-			return new Date(t);
+			if (DEBUG) {
+				var t = new Date();
+				t.setHours(16);
+				t.setMinutes(59);
+				t.setSeconds(55);
+				t.setDate(19);
+				return new Date(new Date(t).getTime() + (new Date().getTime() - fT));
+			} else {
+				return new Date();
+			}
 		},
 		nextFriday() {
 			let date = new Date(this.now);
@@ -121,9 +139,6 @@ export default {
 				date.setDate(date.getDate() + 7);
 			}
 			return date.getTime();
-		},
-		yeastify() {
-			console.log('yeaaast');
 		}
 	}
 };
