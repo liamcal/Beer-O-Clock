@@ -3,7 +3,7 @@ import anime from 'animejs';
 var canvasEl = document.querySelector('#yeast');
 var ctx = canvasEl.getContext('2d');
 
-var numberOfParticules = 40;
+var numberOfParticules = 25;
 var colors = ['#FF1461', '#18FF92', '#5A87FF', '#FBF38C'];
 var ptInterval = null;
 
