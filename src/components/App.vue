@@ -116,7 +116,7 @@ export default {
 	},
 	computed: {
 		itIsBeerOClock() {
-			if (this.now.getHours() == 16 && this.now.getDay() == 5) {
+			if (this.now.getHours() == 16 && this.now.getDay() == 5 && this.now.getMinutes() == 30) {
 				return (this.nextFriday() - this.now.getTime()) <= 3600000;
 			}
 		},
@@ -193,7 +193,7 @@ export default {
 		nextFriday() {
 			let date = new Date(this.now);
 			date.setDate(date.getDate() + (12 - date.getDay()) % 7);
-			date.setHours(16, 0, 0, 0);
+			date.setHours(16, 30, 0, 0);
 			if (this.now.getDay() == 5 && this.now.getHours() >= 17) {
 				date.setDate(date.getDate() + 7);
 			}
